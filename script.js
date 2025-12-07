@@ -364,7 +364,7 @@ function renderPassport(popName=null){
       <div class="title">${p.name}</div>
 
       <div class="stamp ${popName===p.name?'pop':''}" style="${stamped?'opacity:.98':'opacity:.45; filter:grayscale(1)'}">
-        <img src="assets/stamp.svg" alt="stamp">
+        <img src="stamp.svg" alt="stamp">
         <div class="label">${stamped ? p.name.split(' ')[0].toUpperCase() : 'NOT STAMPED'}</div>
       </div>
       <div class="stamp-date">${stamped && stampDate ? stampDate : ''}</div>`;
