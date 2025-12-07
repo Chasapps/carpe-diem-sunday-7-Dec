@@ -1,0 +1,850 @@
+/* ==========================================================================
+   CARPE DIEM PASSPORT + HARBOUR POOLS APP STYLES
+   - Splash screen uses .splash-body
+   - Main app + overview use default body styles
+   ========================================================================== */
+
+/* Global base ------------------------------------------------------------- */
+:root{
+  /* Deep inky navy from crest background */
+  --bg-navy: #102133;
+
+  /* Foil gold tuned slightly cooler + brighter */
+  --gold:#D1B36F;
+  --gold-mid:#BD9A4C;
+  --gold-deep:#8C6A2F;
+
+  /* Text / ink */
+  --ink:#1F2732;
+
+  /* Accents - subtle, not blue-ish */
+  --accent:#071422;        /* primary accent = deep navy */
+  --accent-soft:#E9EDF2;   /* very light neutral with tiny blue/grey */
+
+  /* Light UI for main app */
+  --pill-bg:#F5F2EA;       /* slightly lighter, less yellow */
+  --pill-border:#D8C5A0;   /* gold-tinted border, softer */
+  --card-bg:#FFFFFF;
+  --card-shadow:0 14px 35px rgba(7,20,34,.16);
+
+  --radius-card:18px;
+  --radius-pill:999px;
+  --name-top:8%;
+  --page-bg:#F6F3EC;       /* warm but not too beige */
+}
+
+html,body{
+  height:100%;
+  margin:0;
+  font-family:'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color:var(--ink);
+  background:var(--page-bg);
+}
+
+/* =========================================================================
+   SPLASH PASSPORT COVER
+   ========================================================================= */
+
+.splash-body{
+  min-height:100vh;
+  background-color: #102133;
+  background-image:url("carpe-diem.png");
+  background-repeat:no-repeat;
+  background-position:center 44%;
+  background-size:78%;
+  background-attachment:fixed;
+  cursor:pointer;
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  color:var(--gold);
+  overscroll-behavior:contain;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.splash-overlay{
+  position:fixed;
+  top:var(--name-top);
+  left:0;
+  right:0;
+  text-align:center;
+  padding:0 12px;
+  pointer-events:none;
+}
+
+.name-tip{
+  display:inline-block;
+  margin-bottom:10px;
+  padding:4px 10px;
+  font-size:12px;
+  color:var(--gold);
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:999px;
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.35);
+  opacity:0;
+  transform:translateY(-6px);
+  transition:opacity .5s ease, transform .5s ease;
+  pointer-events:none;
+}
+
+.name-tip.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.foil-emboss{
+  background-image:linear-gradient(
+    180deg,
+    rgba(255,255,255,.46) 0%,
+    var(--gold) 20%,
+    var(--gold-mid) 40%,
+    var(--gold-deep) 55%,
+    var(--gold) 72%,
+    rgba(255,255,255,.55) 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.15),
+    0 2px 0 rgba(0,0,0,.55),
+    0 12px 24px rgba(0,0,0,.35);
+}
+
+.owner-name{
+  margin:0;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:capitalize;
+  font-size:clamp(24px, 3.6vw, 36px);
+  display:inline-block;
+  pointer-events:auto;
+}
+
+.owner-input{
+  font:inherit;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:capitalize;
+  text-align:center;
+  color:#3a2b08;
+  border:1.5px solid rgba(210,181,111,.65);
+  box-shadow:0 0 0 2px rgba(210,181,111,.22);
+  border-radius:10px;
+  padding:6px 12px;
+  min-width:240px;
+  background:rgba(255,255,255,.92);
+  outline:none;
+}
+
+#resetIcon{
+  position:fixed;
+  top:18px;
+  right:18px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--gold);
+  color:#241b08;
+  font-weight:bold;
+  font-size:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.4),
+    inset 0 1px 2px rgba(255,255,255,.5);
+  opacity:0;
+  transition:opacity .4s ease;
+  cursor:pointer;
+  pointer-events:none;
+  z-index:20;
+}
+
+#resetIcon.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+#confirmBox{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);
+  border:1.5px solid rgba(255,255,255,.25);
+  border-radius:16px;
+  padding:24px 32px;
+  text-align:center;
+  color:var(--gold);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  display:none;
+  z-index:50;
+}
+
+#confirmBox.show{
+  display:block;
+  animation:fadeIn .3s ease;
+}
+
+#confirmBox p{
+  margin:0 0 16px;
+  font-size:18px;
+  font-weight:600;
+}
+
+#confirmBox button{
+  margin:0 6px;
+  padding:8px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  color:#2b1d03;
+  font-size:15px;
+}
+
+#btnYes{
+  background:var(--gold);
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.45),
+    0 2px 6px rgba(0,0,0,.45);
+}
+
+#btnNo{
+  background:rgba(210,181,111,.75);
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; transform:translate(-50%,-55%); }
+  to{   opacity:1; transform:translate(-50%,-50%); }
+}
+
+/* =========================================================================
+   MAIN APP LAYOUT (Harbour Pools)
+   ========================================================================= */
+
+body:not(.splash-body){
+  background:linear-gradient(180deg, #f7f9ff 0%, #eef2ff 100%);
+}
+
+header.glass{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,.85);
+  border-bottom:1px solid rgba(15,32,60,.08);
+}
+
+.titlebar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.brand .dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--gold), var(--gold-mid));
+  box-shadow:0 0 0 3px rgba(207,176,110,.25);
+}
+
+.brand h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:.04em;
+}
+
+.badge{
+  font-size:13px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:var(--bg-navy);
+  color:#FDF7E3;
+  box-shadow:0 5px 14px rgba(14,36,54,.45);
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+}
+
+/* Pills & buttons --------------------------------------------------------- */
+button, .pill{
+  font-family:inherit;
+  font-size:14px;
+  border:none;
+  cursor:pointer;
+}
+
+.pill{
+  padding:6px 14px;
+  border-radius:var(--radius-pill);
+  background:var(--pill-bg);
+  border:1px solid var(--pill-border);
+  color:var(--ink);
+  box-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+
+.pill.primary{
+  background:var(--bg-navy);
+  color:#FDF7E3;
+  border-color:var(--bg-navy);
+  box-shadow:
+    0 8px 18px rgba(14,36,54,.35),
+    inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+.pill.ghost{
+  background:transparent;
+  border-color:rgba(15,32,60,.25);
+}
+
+a.pill{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Layout containers ------------------------------------------------------- */
+main{
+  padding:12px 10px 20px;
+}
+
+.view{
+  display:none;
+}
+
+.view.active{
+  display:block;
+}
+
+.controls{
+  display:flex;
+  gap:6px;
+  margin-bottom:8px;
+}
+
+.content-split{
+  display:grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap:10px;
+}
+
+/* Cards ------------------------------------------------------------------- */
+.card{
+  background:var(--card-bg);
+  border-radius:var(--radius-card);
+  box-shadow:var(--card-shadow);
+  padding:12px 12px 10px;
+}
+
+/* Pool list --------------------------------------------------------------- */
+#poolList{
+  max-height:120px;
+  overflow:hidden;
+}
+
+.pool-item{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 6px;
+  border-bottom:1px solid rgba(15,32,60,.06);
+}
+
+.pool-item:last-child{
+  border-bottom:none;
+}
+
+.pool-name{
+  font-weight:700;
+  font-size:14px;
+}
+
+.coords{
+  font-size:12px;
+  color:#6c7486;
+}
+
+.stamp-chip{
+  white-space:nowrap;
+}
+
+.stamp-chip.stamped{
+  background:var(--gold);
+  color:#2A1E08;
+  border-color:var(--gold-deep);
+}
+
+.row-selected{
+  background:rgba(14,36,54,.06);
+}
+
+/* Map panel --------------------------------------------------------------- */
+.map-wrap{
+  position:relative;
+  padding-bottom:38px;
+}
+
+.map-wrap #map{
+  border-radius:14px;
+  overflow:hidden;
+}
+
+/* Map fine-tuning --------------------------------------------------------- */
+.pool-map{
+  height:60vh;
+  min-height:320px;
+}
+
+.map-actions{
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:6px;
+  display:flex;
+  justify-content:space-between;
+  gap:6px;
+  pointer-events:none;
+}
+
+.map-actions .pill{
+  pointer-events:auto;
+}
+
+.map-actions .small{
+  font-size:12px;
+  padding-inline:10px;
+  padding-block:6px;
+}
+
+.leaflet-control-zoom{
+  margin-top:6px !important;
+  margin-left:6px !important;
+}
+
+
+.map-toggle{
+  position:absolute;
+  left:50%;
+  bottom:6px;
+  transform:translateX(-50%);
+}
+
+/* Full map toggle for desktop */
+body.full-map .content-split{
+  display:grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap:10px;
+}
+
+body.full-map #poolList{
+  max-height:120px;
+  overflow:hidden;
+}
+
+body.full-map .map-wrap.card{
+  height:calc(100vh - 140px);
+}
+
+body.full-map #map{
+  height:100% !important;
+}
+
+/* Passport grid ----------------------------------------------------------- */
+.subtitle{
+  margin:10px 2px 6px;
+  font-size:16px;
+  font-weight:800;
+}
+
+.passport-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:10px;
+  max-width:600px;
+  margin:0 auto;
+}
+
+/* Passport pagination controls */
+.passport-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:8px 0 12px;
+}
+
+.passport-nav .page-label{
+  font-size:13px;
+  font-weight:600;
+  color:#4a5263;
+}
+
+.passport-nav button[disabled]{
+  opacity:.45;
+  cursor:default;
+  box-shadow:none;
+}
+
+.passport{
+  background:#fff;
+  border-radius:18px;
+  padding:10px 12px;
+  box-shadow:0 8px 20px rgba(19,46,89,.18);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.passport .title{
+  font-weight:700;
+  font-size:14px;
+}
+
+.passport .hint{
+  font-size:12px;
+  color:#6c7486;
+}
+
+.passport .stamp{
+  margin-top:6px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.passport .stamp img{
+  width:44px;
+  height:44px;
+}
+
+.passport .stamp .label{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+.passport .stamp.pop{
+  animation:pop .35s ease;
+}
+
+@keyframes pop{
+  0%{ transform:scale(.85); }
+  60%{ transform:scale(1.08); }
+  100%{ transform:scale(1); }
+}
+
+.hint{
+  font-size:12px;
+  color:#6c7486;
+  margin-top:4px;
+}
+
+/* Responsive tweaks ------------------------------------------------------- */
+
+@media (max-width:700px){
+  .titlebar{
+    flex-wrap:wrap;
+    gap:6px;
+  }
+
+  .titlebar .actions{
+    margin-left:auto;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+
+  .titlebar .actions .pill{
+    padding-inline:10px;
+    font-size:13px;
+  }
+
+  body{
+    overflow:hidden;
+  }
+
+  main{
+    height:calc(100vh - 60px);
+    padding-bottom:10px;
+    box-sizing:border-box;
+  }
+
+  .content-split{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+  }
+
+  #poolList{
+    max-height:120px;
+    flex:0 0 auto;
+  }
+
+  .map-wrap{
+    flex:1 1 auto;
+    margin-top:8px;
+  }
+
+  .pool-map{
+    height:100% !important;
+    min-height:320px !important;
+  }
+
+  .map-wrap #map{
+    height:100% !important;
+  }
+}
+
+/* --- iPhone Map FIX (Leaflet requires a real height) --- */
+
+@supports (-webkit-touch-callout: none) {
+
+  /* Force the main area to expand to real usable height */
+  main {
+    height: auto !important;
+    min-height: calc(100vh - 120px) !important;
+  }
+
+  /* Stack mode layout fix */
+  .content-split {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: calc(100vh - 160px) !important;
+  }
+
+  /* Let the map expand fully */
+  .map-wrap {
+    flex: 1 1 auto !important;
+    min-height: 300px !important;
+  }
+
+  #map {
+    height: 100% !important;
+    min-height: 300px !important;
+  }
+}
+
+/* === SINGLE-CARD LAYOUT: NAME → BIG ARROWS → MAP ======================= */
+
+/* Pool name header inside the map card */
+.pool-header {
+  margin-bottom: 4px;
+}
+
+/* Center the up/down arrows and space them nicely */
+.controls.arrow-controls {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 8px 0 10px;
+}
+
+/* Make the arrows BIG */
+.arrow-pill {
+  font-size: 36px;
+  line-height: 1;
+  padding: 8px 24px;
+}
+
+/* #poolList now only holds one row, so let it size naturally */
+#poolList {
+  max-height: none;
+  overflow: visible;
+}
+
+/* =======================================================================
+   OVERVIEW PAGE STYLES
+   ======================================================================= */
+
+.overview-body{
+  background:linear-gradient(180deg, #f7f9ff 0%, #eef2ff 100%);
+}
+
+.overview-main{
+  padding:12px 10px 20px;
+  min-height:calc(100vh - 60px);
+  box-sizing:border-box;
+}
+
+.overview-card{
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.overview-header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:4px;
+}
+
+.overview-text h2{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.overview-subtext{
+  margin:2px 0 0;
+  font-size:13px;
+  color:#6c7486;
+}
+
+#overviewMap{
+  width:100%;
+  height:420px;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.overview-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  font-size:12px;
+  color:#6c7486;
+  margin-top:6px;
+}
+
+.legend-item{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+
+.legend-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+.legend-dot-visited{
+  background-color:var(--gold);
+}
+
+.legend-dot-notvisited{
+  background-color:#6c8ab4;
+}
+
+/* Marker appearance for overview page */
+.overview-marker{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid #ffffff;
+  box-shadow:0 0 6px rgba(0,0,0,.4);
+}
+
+.overview-marker-visited{
+  background:var(--gold);
+}
+
+.overview-marker-notvisited{
+  background:#6c8ab4;
+}
+
+@media (max-width:700px){
+  .titlebar{
+    flex-wrap:wrap;
+    gap:6px;
+  }
+
+  .titlebar .actions{
+    margin-left:auto;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+
+  .titlebar .actions .pill{
+    padding-inline:10px;
+    font-size:13px;
+  }
+
+  .overview-main{
+    padding:10px 8px 16px;
+  }
+  #overviewMap{
+    height:calc(100vh - 200px);
+  }
+}
+.map-layout{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.pool-header{
+  /* optional extra spacing for the name row */
+  margin-bottom:4px;
+}
+
+.controls.big-arrows{
+  display:flex;
+  justify-content:center;
+  gap:32px;
+  margin-bottom:4px;
+}
+
+.arrow-pill{
+  font-size:40px;      /* make arrows BIG */
+  padding:10px 22px;
+  border-radius:999px;
+}
+
+/* since poolList is now just one row, let it size naturally */
+#poolList{
+  max-height:none;
+  overflow:visible;
+}
+/* NAME → BIG ARROWS → MAP layout fix */
+
+.map-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Make sure the map actually has some height */
+#map,
+.pool-map {
+  width: 100%;
+  min-height: 320px;        /* you can change to 50vh or 400px if you like */
+  border-radius: 18px;      /* optional, to match cards */
+  overflow: hidden;
+}
+
+
+
+
+.stamp-date{
+  font-size:11px;
+  font-weight:600;
+  color:#6c7486;
+  letter-spacing:.05em;
+  margin-top:2px;
+  cursor:pointer;
+}
