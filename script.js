@@ -6,7 +6,7 @@ APP LOGIC (v2.3) — CLEANED + FIXED
 const LS_KEYS = {
   VISITED:'harbour_pools_visited_v2_3',
   SELECTION:'harbour_pools_selected_v2_3',
-  PASSPORT_PAGE:'harbour_pools_passport_page_v1'
+  STAMPS_PAGE:'harbour_pools_stamps_page_v1'
 };
 
 const pools = [
@@ -50,41 +50,41 @@ visited = normalizeVisitedMap(visited);
 let selectedIndex = Number(localStorage.getItem(LS_KEYS.SELECTION) || 0);
 
 const listView = document.getElementById('listView');
-const passportView = document.getElementById('passportView');
+const stampsView = document.getElementById('passportView');
 const toggleBtn = document.getElementById('toggleBtn');
 const resetBtn = document.getElementById('resetBtn');
 const countBadge = document.getElementById('countBadge');
 const mapToggle = document.getElementById('mapToggle');
 
-const prevPassportPageBtn = document.getElementById('prevPassportPage');
-const nextPassportPageBtn = document.getElementById('nextPassportPage');
+const prevStampsPageBtn = document.getElementById('prevPassportPage');
+const nextStampsPageBtn = document.getElementById('nextPassportPage');
 
-let currentPassportPage = Number(localStorage.getItem(LS_KEYS.PASSPORT_PAGE) || 0);
-let onPassport = false;
+let currentStampsPage = Number(localStorage.getItem(LS_KEYS.STAMPS_PAGE) || 0);
+let onStampsView = false;
 
 function updateCount(){
   const n = Object.values(visited).filter(v => v && v.done).length;
   countBadge.textContent = `${n} / ${pools.length}`;
 }
 
-function setView(passport){
-  onPassport = passport;
+function setView(showStamps){
+  onStampsView = showStamps;
   document.body.classList.remove('full-map');
-  listView.classList.toggle('active', !passport);
-  passportView.classList.toggle('active', passport);
-  toggleBtn.textContent = passport ? 'Back to List' : 'Passport';
-  if (passport) renderPassport();
+  listView.classList.toggle('active', !showStamps);
+  stampsView.classList.toggle('active', showStamps);
+  toggleBtn.textContent = showStamps ? 'Back to List' : 'Stamps';
+  if (showStamps) renderStamps();
   setTimeout(()=> map.invalidateSize(), 150);
 }
 
-toggleBtn.addEventListener('click', () => setView(!onPassport));
+toggleBtn.addEventListener('click', () => setView(!onStampsView));
 
 resetBtn.addEventListener('click', () => {
   if (!confirm('Clear all stamps?')) return;
   visited = {};
   localStorage.setItem(LS_KEYS.VISITED, JSON.stringify(visited));
   renderList();
-  renderPassport();
+  renderStamps();
   updateCount();
 });
 
@@ -170,7 +170,7 @@ function toggleStamp(name, animate = false){
 
   localStorage.setItem(LS_KEYS.VISITED, JSON.stringify(visited));
   renderList();
-  renderPassport(animate ? name : null);
+  renderStamps(animate ? name : null);
 }
 
 function setStampDate(name, date){
@@ -182,7 +182,7 @@ function setStampDate(name, date){
 
   localStorage.setItem(LS_KEYS.VISITED, JSON.stringify(visited));
   renderList();
-  renderPassport(name);
+  renderStamps(name);
 }
 
 function selectIndex(idx){
@@ -197,11 +197,11 @@ function moveSelection(step){ selectIndex(selectedIndex + step); }
 document.getElementById('btnUp').addEventListener('click', () => moveSelection(-1));
 document.getElementById('btnDown').addEventListener('click', () => moveSelection(1));
 
-if (prevPassportPageBtn){
-  prevPassportPageBtn.addEventListener('click', () => changePassportPage(-1));
+if (prevStampsPageBtn){
+  prevStampsPageBtn.addEventListener('click', () => changeStampsPage(-1));
 }
-if (nextPassportPageBtn){
-  nextPassportPageBtn.addEventListener('click', () => changePassportPage(1));
+if (nextStampsPageBtn){
+  nextStampsPageBtn.addEventListener('click', () => changeStampsPage(1));
 }
 
 const map = L.map('map').setView([pools[0].lat, pools[0].lng], 14);
@@ -219,12 +219,12 @@ function panToSelected(){
   map.setView([p.lat, p.lng], 15, { animate: true });
 }
 
-function changePassportPage(delta){
-  currentPassportPage += delta;
-  renderPassport();
+function changeStampsPage(delta){
+  currentStampsPage += delta;
+  renderStamps();
 }
 
-function renderPassport(popName = null){
+function renderStamps(popName = null){
   const grid = document.getElementById('passportGrid');
   if (!grid) return;
 
@@ -232,14 +232,14 @@ function renderPassport(popName = null){
   const stampsPerPage = 3;
   const totalPages = Math.max(1, Math.ceil(pools.length / stampsPerPage));
 
-  if (currentPassportPage < 0) currentPassportPage = 0;
-  if (currentPassportPage > totalPages - 1) currentPassportPage = totalPages - 1;
+  if (currentStampsPage < 0) currentStampsPage = 0;
+  if (currentStampsPage > totalPages - 1) currentStampsPage = totalPages - 1;
 
   try {
-    localStorage.setItem(LS_KEYS.PASSPORT_PAGE, String(currentPassportPage));
+    localStorage.setItem(LS_KEYS.STAMPS_PAGE, String(currentStampsPage));
   } catch (e) {}
 
-  const start = currentPassportPage * stampsPerPage;
+  const start = currentStampsPage * stampsPerPage;
   const pagePools = pools.slice(start, start + stampsPerPage);
 
   grid.innerHTML = '';
@@ -282,14 +282,14 @@ function renderPassport(popName = null){
   });
 
   if (pageLabel){
-    pageLabel.textContent = `Page ${currentPassportPage + 1} of ${totalPages}`;
+    pageLabel.textContent = `Page ${currentStampsPage + 1} of ${totalPages}`;
   }
 
-  if (prevPassportPageBtn){
-    prevPassportPageBtn.disabled = (currentPassportPage === 0);
+  if (prevStampsPageBtn){
+    prevStampsPageBtn.disabled = (currentStampsPage === 0);
   }
-  if (nextPassportPageBtn){
-    nextPassportPageBtn.disabled = (currentPassportPage === totalPages - 1);
+  if (nextStampsPageBtn){
+    nextStampsPageBtn.disabled = (currentStampsPage === totalPages - 1);
   }
 }
 
