@@ -4,11 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Harbour Pools — App</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
+
   <script>
     (function(){
       try{
@@ -22,6 +25,7 @@
     })();
   </script>
 </head>
+
 <body>
   <header class="glass">
     <div class="titlebar">
@@ -29,38 +33,33 @@
         <div class="dot"></div>
         <h1>Harbour Pools</h1>
       </div>
+
       <span id="countBadge" class="badge">0 / 0</span>
+
       <div class="actions">
         <button id="toggleBtn" class="pill primary" title="Toggle Stamps/List">Stamps</button>
         <button id="resetBtn" class="pill ghost" title="Reset stamps">Reset</button>
-        <a href="index.html" class="pill ghost" title="Back to stamps">Exit</a>
+        <a href="index.html" class="pill ghost" title="Exit app">Exit</a>
       </div>
     </div>
   </header>
-  <main>
-    <section id="listView" class="view active">
-      <!-- Single main card: Name → BIG arrows → Map -->
-      <div class="map-wrap card main-layout">
-        <!-- Pool name + Not yet / Stamped chip -->
-        <div id="poolList" class="pool-header"></div>
 
-        <!-- BIG up/down arrows -->
+  <main>
+
+    <section id="listView" class="view active">
+      <div class="map-wrap card main-layout">
+        <div id="poolList" class="pool-header"></div>
         <div class="controls arrow-controls">
           <button id="btnUp" class="pill arrow-pill">▲</button>
           <button id="btnDown" class="pill arrow-pill">▼</button>
         </div>
-
-        <!-- Map -->
         <div id="map" class="pool-map"></div>
-
-        <!-- Map actions -->
         <div class="map-actions">
           <button id="openNativeMap" class="pill ghost small">🧭 Open in Maps</button>
           <button id="mapToggle" class="map-toggle pill" aria-pressed="false">🗺️ Full Map</button>
         </div>
       </div>
 
-      <!-- Previous / Next bar under the main card -->
       <div class="pool-nav card">
         <button id="btnPrevPool" class="pool-nav-btn">◀ Previous</button>
         <button id="btnNextPool" class="pool-nav-btn">Next ▶</button>
@@ -77,8 +76,11 @@
       <div id="passportGrid" class="passport-grid"></div>
       <p class="hint">Your stamps are saved to this device.</p>
     </section>
+
   </main>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
